@@ -38,17 +38,19 @@ typedef enum {
 @property (nonatomic, readwrite, setter = setLineHeight:, getter = lineHeight) CGFloat _lineHeight;
 @property (nonatomic, readonly) CGFloat _textHeight;
 @property (nonatomic, readwrite, setter = setMinimumFontSize:, getter = minimumFontSize) CGFloat _minimumFontSize;
-@property (nonatomic, retain, setter = setText:, getter = text) NSString *_text;
-@property (nonatomic, retain, setter = setTextColor:, getter = fontColor) UIColor *_textColor;
-@property (nonatomic, retain, setter = setFontHighlightColor:, getter = fontHighlightColor) UIColor *_fontHighlightColor;
-@property (nonatomic, retain, setter = setFont:, getter = font) UIFont *_font;
+@property (nonatomic, strong, setter = setText:, getter = text) NSString *_text;
+@property (nonatomic, strong, setter = setTextColor:, getter = fontColor) UIColor *_textColor;
+@property (nonatomic, strong, setter = setFontHighlightColor:, getter = fontHighlightColor) UIColor *_fontHighlightColor;
+@property (nonatomic, strong, setter = setFont:, getter = font) UIFont *_font;
 @property (nonatomic, readwrite, setter = setLimitToNumberOfLines:, getter = limitToNumberOfLines) BOOL _limitToNumberOfLines;
 @property (nonatomic, readwrite, setter = setResizeToFitText:, getter = resizeToFitText) BOOL _shouldResizeToFit;
 @property (nonatomic, readwrite, setter = setTextAlignment:, getter = textAlignment) MTLabelTextAlignment _textAlignment;
-@property (nonatomic, weak) id<MTLabelDelegate> delegate;
+@property (unsafe_unretained, nonatomic) id<MTLabelDelegate> delegate;
 @property (nonatomic, readwrite, setter = setAdjustSizeToFit:, getter = adjustSizeToFit) BOOL _adjustSizeToFit;
 
-@property (nonatomic, readwrite) CGFloat shadowOffset;
+@property (nonatomic, assign, setter = setShadowOffset:, getter = shadowOffset) CGSize _shadowOffset;
+@property (nonatomic, strong, setter = setShadowColor:, getter = shadowColor) UIColor *_shadowColor;
+@property (nonatomic, strong, setter = setStrokeColor:, getter = strokeColor) UIColor *_strokeColor;
 
 -(id)initWithFrame:(CGRect)frame andText:(NSString *)text;
 -(id)initWithText:(NSString *)text;

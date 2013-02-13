@@ -51,8 +51,9 @@ CGRect CTLineGetTypographicBoundsAsRect(CTLineRef line, CGPoint lineOrigin) {
 @synthesize _textAlignment;
 @synthesize delegate;
 @synthesize _adjustSizeToFit;
-@synthesize shadowOffset;
-
+@synthesize _shadowOffset;
+@synthesize _shadowColor;
+@synthesize _strokeColor;
 
 #pragma mark - Setters
 
@@ -125,6 +126,29 @@ CGRect CTLineGetTypographicBoundsAsRect(CTLineRef line, CGPoint lineOrigin) {
     }
 }
 
+- (void)setShadowOffset:(CGSize)shadowOffset
+{
+    if(CGSizeEqualToSize(_shadowOffset, shadowOffset) == NO) {
+        _shadowOffset = shadowOffset;
+        [self setNeedsDisplay];
+    }
+}
+
+- (void)setShadowColor:(UIColor *)shadowColor
+{
+    if(_shadowColor != shadowColor) {
+        _shadowColor = shadowColor;
+        [self setNeedsDisplay];
+    }
+}
+
+- (void)setStrokeColor:(UIColor *)strokeColor
+{
+    if(_strokeColor != strokeColor) {
+        _strokeColor = strokeColor;
+        [self setNeedsDisplay];
+    }
+}
 
 #pragma mark - Getters
 
@@ -419,7 +443,17 @@ CGRect CTLineGetTypographicBoundsAsRect(CTLineRef line, CGPoint lineOrigin) {
     CGContextScaleCTM(context, 1.0, -1.0);
     
     CGContextSaveGState(context);
-	
+	    
+    //CGColorRef colorRef = CGColorCreate(CGColorSpaceCreateDeviceRGB(), CGColorGetComponents([_shadowColor CGColor]));
+    if(_shadowColor) {
+        CGContextSetShadowWithColor(context, _shadowOffset, 0, [_shadowColor CGColor]);
+    }
+    //CGColorRelease(colorRef);
+    if(_strokeColor) {
+        CGContextSetStrokeColorWithColor(context, [_strokeColor CGColor]);
+        CGContextSetTextDrawingMode(context, kCGTextFillStroke);
+        CGContextSaveGState(context);
+    }
     [self drawTextInRect:rect inContext:context];
     
     if (_shouldResizeToFit && self.frame.size.height < _textHeight) {
@@ -441,8 +475,5 @@ CGRect CTLineGetTypographicBoundsAsRect(CTLineRef line, CGPoint lineOrigin) {
 
 #pragma mark - Memory managment
 
-- (void)dealloc {
-    
-}
 
 @end
