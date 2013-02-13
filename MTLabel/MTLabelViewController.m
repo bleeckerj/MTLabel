@@ -21,10 +21,6 @@
 
 @implementation MTLabelViewController
 
-- (void)dealloc
-{
-    [super dealloc];
-}
 
 - (void)didReceiveMemoryWarning
 {
